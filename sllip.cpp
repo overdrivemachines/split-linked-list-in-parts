@@ -9,17 +9,16 @@ struct ListNode {
   ListNode() : val(0), next(nullptr) {}
   ListNode(int x) : val(x), next(nullptr) {}
   ListNode(int x, ListNode *next) : val(x), next(next) {}
-  ListNode(int *arr) {
-    // for (int i = 0; i < (*arr).size(); i++) {
-    // }
-  }
 };
 
 vector<ListNode *> splitListToParts(ListNode *head, int k);
 void printLinkedList(ListNode *head);
+ListNode *createLinkedList(int arr[]);
 
 int main(int argc, char const *argv[]) {
-  ListNode *start = new ListNode(5);
+  int numbers[] = {5, 8, 9, 32, 2, -1, 0, 65};
+  cout << "numbers: " << numbers << "\n";
+  ListNode *start = createLinkedList(numbers);
   printLinkedList(start);
   return 0;
 }
@@ -40,4 +39,18 @@ void printLinkedList(ListNode *head) {
     element = element->next;
   }
   cout << "NULL" << endl;
+}
+
+// Create a linked list given an array
+// returns pointer to head of linked list
+ListNode *createLinkedList(int arr[]) {
+  ListNode *element = new ListNode(arr[0]);
+  ListNode *head = element;
+
+  for (int i = 1; i < sizeof(arr); i++) {
+    element->next = new ListNode(arr[i]);
+    element = element->next;
+  }
+
+  return head;
 }
