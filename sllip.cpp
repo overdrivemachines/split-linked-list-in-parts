@@ -16,13 +16,15 @@ void printLinkedList(ListNode *head);
 ListNode *createLinkedList(int arr[]);
 
 int main(int argc, char const *argv[]) {
-  int numbers[] = {5, 8, 9, 32, 2, -1, 0, 65};
+  int numbers[] = {25, 63, 70, 23, 25, 11, 81, 35, 77, 70, 52, 26, 80, 96, 98, 10, 3, 76, 66};
+
+  cout << "Numbers Array size: " << sizeof(numbers) / sizeof(numbers[0]) << endl;
 
   // Create Linked list using numbers array as values
   ListNode *element = new ListNode(numbers[0]);
   ListNode *head = element;
 
-  for (int i = 1; i < sizeof(numbers) / sizeof(int); i++) {
+  for (unsigned int i = 1; i < (sizeof(numbers) / sizeof(numbers[0])); i++) {
     element->next = new ListNode(numbers[i]);
     element = element->next;
   }
@@ -31,7 +33,7 @@ int main(int argc, char const *argv[]) {
   printLinkedList(head);
 
   // Split the linked list into parts
-  splitListToParts(head, 3);
+  splitListToParts(head, 4);
 
   return 0;
 }
@@ -51,8 +53,24 @@ vector<ListNode *> splitListToParts(ListNode *head, int k) {
     element = element->next;
   }
 
-  // Number of elements in each linked list part
-  int partSize[k] = {totalElements / k};
+  // Size of each Link List
+  int partSize[k] = {0};
+
+  // extra
+  int extras = totalElements % k;
+
+  // Print Number of elements in each linked list
+  for (int i = 0; i < k; i++) {
+    partSize[i] = totalElements / k;
+    if (extras) {
+      partSize[i]++;
+      extras--;
+    }
+
+    cout << "LL" << i << " size: " << partSize[i] << endl;
+  }
+
+  exit(0);
 
   cout << "Total elements: " << totalElements << endl;
   cout << "Number of parts: " << k << endl;
