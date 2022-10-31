@@ -16,16 +16,24 @@ void printLinkedList(ListNode *head);
 ListNode *createLinkedList(int arr[]);
 
 int main(int argc, char const *argv[]) {
-  int numbers[] = {25, 63, 70, 23, 25, 11, 81, 35, 77, 70, 52, 26, 80, 96, 98, 10, 3, 76, 66};
+  // int numbers[] = {25, 63, 70, 23, 25, 11, 81, 35, 77, 70, 52, 26, 80, 96, 98, 10, 3, 76, 66};
   // int numbers[] = {25, 63};
+  int numbers[] = {};
+  int k = 5;
 
-  cout << "Numbers Array size: " << sizeof(numbers) / sizeof(numbers[0]) << endl;
+  int numbersSize = sizeof(numbers) / sizeof(int);
+  cout << "Numbers Array size: " << numbersSize << endl;
+
+  if (numbersSize == 0) {
+    splitListToParts(nullptr, k);
+    return 0;
+  }
 
   // Create Linked list using numbers array as values
   ListNode *element = new ListNode(numbers[0]);
   ListNode *head = element;
 
-  for (unsigned int i = 1; i < (sizeof(numbers) / sizeof(numbers[0])); i++) {
+  for (unsigned int i = 1; i < (numbersSize); i++) {
     element->next = new ListNode(numbers[i]);
     element = element->next;
   }
@@ -34,7 +42,7 @@ int main(int argc, char const *argv[]) {
   printLinkedList(head);
 
   // Split the linked list into parts
-  splitListToParts(head, 4);
+  splitListToParts(head, k);
 
   return 0;
 }
@@ -43,6 +51,14 @@ int main(int argc, char const *argv[]) {
 // Returns vector of linked lists
 vector<ListNode *> splitListToParts(ListNode *head, int k) {
   vector<ListNode *> linkedListParts;
+
+  if (head == nullptr) {
+    if (k) {
+      for (int i = 0; i < k; i++)
+        linkedListParts.push_back(nullptr);
+    }
+    return linkedListParts;
+  }
 
   ListNode *element = head;
 
@@ -55,7 +71,7 @@ vector<ListNode *> splitListToParts(ListNode *head, int k) {
   }
 
   // Size of each Link List
-  int partSize[k] = {0};
+  vector<int> partSize(k, 0);
 
   // extra
   int extras = totalElements % k;
@@ -71,14 +87,18 @@ vector<ListNode *> splitListToParts(ListNode *head, int k) {
   }
 
   element = head;
+  ListNode *previous;
   for (int i = 0; i < k; i++) {
     linkedListParts.push_back(element);
     for (int j = 0; j < partSize[i]; j++) {
+      // Set the last element's next pointer to null
+      previous = element;
       element = element->next;
     }
+    previous->next = nullptr;
   }
 
-  for (int i = 0; i < linkedListParts.size(); i++) {
+  for (unsigned int i = 0; i < linkedListParts.size(); i++) {
     cout << "LL " << i << ": " << linkedListParts[i]->val << endl;
   }
 
